@@ -1,0 +1,7 @@
+cluster('cscpdi').database('Distribution').HWInventory_MergedOnHandInventory
+|where DatacenterCode  in ('TYO31','TYO01','TYO23')
+|where ColocationCode in ('TYO31.DPLY','TYO01.DPLY','TYO23.DPLY')
+|where AvailableQuantity > 0
+| join kind=leftouter cluster('cscpdi').database('Distribution').Skuref_MSFItem on $left.SkuId == $right.MsfPartNumberAx
+| project DatacenterCode,SkuId, Name, LocationName,AvailableQuantity,DimensionGroup,ItemGroup
+|order by DatacenterCode asc, AvailableQuantity desc,Name asc 
